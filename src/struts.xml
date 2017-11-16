@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<package name="default" extends="struts-default" namespace="/">
+        <action name="queryApp" class="se.appmanage.Action" method="queryAppByName">
+              <result name="success">/queryResult.jsp</result>
+              <result name="error">/error.jsp</result>
+              <result name="noresult">/notFound.jsp</result>
+        </action>
+        <action name="Category" class="se.appmanage.Action" method="queryAppByCategory">
+              <result name="success">/cateResult.jsp</result>
+              <result name="error">/error.jsp</result>
+              <result name="noresult">/notFound.jsp</result>
+        </action>
+        <action name="getApp" class="se.appmanage.Action" method="getAppByID">
+              <result name="success">/showApp.jsp</result>
+              <result name="error">/error.jsp</result>
+              <result name="noresult">/notFound.jsp</result>
+        </action>
+        <action name="index" class="se.appmanage.Action" method="queryAppByDownload">
+              <result name="success">/index.jsp</result>
+              <result name="error">/error.jsp</result>
+              <result name="noresult">/notFound.jsp</result>
+        </action>
+    </package>
+</struts>
