@@ -4,7 +4,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Home</title>
+<title>HandClap</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="My Play Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
@@ -40,7 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
                 <form class="navbar-form navbar-right" action="queryApp" method="post">
-                    <input type="text" class="form-control" placeholder="查找App" name="queryName">
+                    <input type="text" class="form-control" placeholder="Search" name="queryName">
                     <input type="submit" value=" ">
                 </form>
             </div>
@@ -234,12 +234,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <ul class="nav nav-sidebar">
                     <li class="active"><a href="index.action" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首页</a></li>
 
-                    <li><a href="#" class="menu1"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>游戏<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>游戏<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                     </a></li>
 
                 <ul class="cl-effect-2">
 
-                     <s:iterator value="#{'1':'休闲益智','2':'扑克棋牌','3':'飞行射击','4':'网络游戏','5':'跑酷竞速','6':'动作冒险','7':'经营策略','8':'体育竞技','9':'角色扮演','10':'辅助工具'}" id='game'>
+                     <s:iterator value="#{'1':'休闲益智','2':'棋牌桌游','3':'动作射击','4':'网络游戏','5':'跑酷竞速','6':'经营策略','7':'体育竞技','8':'角色扮演','9':'辅助工具'}" id='game'>
                         <li><s:url id="url" action="Category">
                             <s:param name="queryCategory">
                             <s:property value='key' />
@@ -259,9 +259,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             });
                         </script>
 
-                    <li><a href="#" class="menu"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>软件<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+                    <li><a href="#" class="menu"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>软件<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
                         <ul class="cl-effect-1">
-                        <s:iterator value="#{'11':'影音播放','12':'系统工具','13':'通讯社交','14':'手机美化','15':'新闻阅读','16':'摄影图像','17':'考试学习','18':'网上购物','19':'金融理财','20':'生活休闲','21':'旅游出行','22':'健康运动','23':'办公商务','24':'育儿亲子'}" id='software'>
+                        <s:iterator value="#{'10':'影音播放','11':'系统工具','12':'通讯社交','13':'摄影美化','14':'阅读学习','15':'生活购物','16':'金融理财','17':'旅游出行','18':'健康运动','19':'办公商务'}" id='software'>
                         <li><s:url id="url" action="Category">
                             <s:param name="queryCategory">
                             <s:property value='key' />

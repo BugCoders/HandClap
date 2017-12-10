@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>single</title>
+<title>HandClap</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="My Play Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
@@ -39,7 +39,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
                 <form class="navbar-form navbar-right" action="queryApp" method="post">
-                    <input type="text" class="form-control" placeholder="查找App" name="queryName">
+                    <input type="text" class="form-control" placeholder="Search" name="queryName">
                     <input type="submit" value=" ">
                 </form>
             </div>
@@ -234,11 +234,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <ul class="nav nav-sidebar">
                     <li class="active"><a href="index.action" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首页</a></li>
 
-                    <li><a href="#" class="menu1"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>游戏<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>游戏<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                     </a></li>
 
                 <ul class="cl-effect-2">
-                    <s:iterator value="#{'1':'休闲益智','2':'扑克棋牌','3':'飞行射击','4':'网络游戏','5':'跑酷竞速','6':'动作冒险','7':'经营策略','8':'体育竞技','9':'角色扮演','10':'辅助工具'}" id='game'>
+                    <s:iterator value="#{'1':'休闲益智','2':'棋牌桌游','3':'动作射击','4':'网络游戏','5':'跑酷竞速','6':'经营策略','7':'体育竞技','8':'角色扮演','9':'辅助工具'}" id='game'>
                         <li><s:url id="url" action="Category">
                             <s:param name="queryCategory">
                             <s:property value='key' />
@@ -258,9 +258,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             });
                         </script>
 
-                    <li><a href="#" class="menu"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>软件<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+                    <li><a href="#" class="menu"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>软件<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
                         <ul class="cl-effect-1">
-                        <s:iterator value="#{'11':'影音播放','12':'系统工具','13':'通讯社交','14':'手机美化','15':'新闻阅读','16':'摄影图像','17':'考试学习','18':'网上购物','19':'金融理财','20':'生活休闲','21':'旅游出行','22':'健康运动','23':'办公商务','24':'育儿亲子'}" id='software'>
+                        <s:iterator value="#{'10':'影音播放','11':'系统工具','12':'通讯社交','13':'摄影美化','14':'阅读学习','15':'生活购物','16':'金融理财','17':'旅游出行','18':'健康运动','19':'办公商务'}" id='software'>
                         <li><s:url id="url" action="Category">
                             <s:param name="queryCategory">
                             <s:property value='key' />
@@ -312,10 +312,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <!-- <li><a href="#" class="icon twitter-icon">Twitter</a></li> -->
                                 <!-- <li><a href="#" class="icon pinterest-icon">Pinterest</a></li>
                                 <li><a href="#" class="icon whatsapp-icon">Whatsapp</a></li> -->
+                                <s:if test="%{app.isAndroid == 1}">
+                            <li>
+                                <div style="display:inline-block"><a href="#" class="icon like" title="点赞"></a></div>
+                                    <div style="display:inline-block;padding-top:4.5px;position: absolute;"  title="Android评分" ><s:property value='app.score_android' /></div>
+                                </li>
+                            </s:if>
+                            <s:if test="%{app.isIos == 1}">
                                 <li>
                                 <div style="display:inline-block"><a href="#" class="icon like" title="点赞"></a></div>
-                                	<div style="display:inline-block;padding-top:4.5px;position: absolute;"  title="评分" ><s:property value='app.score' /></div>
+                                    <div style="display:inline-block;padding-top:4.5px;position: absolute;"  title="IOS评分" ><s:property value='app.score_ios' /></div>
                                 </li>
+                            </s:if>
                                 <li class="view" title="访问量"><s:property value='app.visits' /></li>
                             </ul>
                         </div>
@@ -339,23 +347,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     });
                                 });
                             </script>
-                            <div class="load_more"> 
+                            <div class="load_more">
+                                <s:if test="%{app.isAndroid == 1}"> 
                                 <ul id="myList">
                                     <li>
-                                        <h4>应用介绍</h4>
-                                        <p><s:property value='app.info' escape="false"/><br><br><br><br><br>
+                                        <h4>Android版本应用信息</h4>
+                                        <p><s:property value='app.info_android' escape="false"/><br><br><br>
                                           	 版本号：
-                                           <s:property value='app.getVersionNumber()'/><br>
+                                           <s:property value='app.getVersionNumber_android()'/><br>
                                      	        更新日期：
-                                           <s:property value='app.getChangeDate()'/><br>
+                                           <s:property value='app.getChangeDate_android()'/><br>
                                         	 作者：
                                            <s:property value='app.getAuthor()'/><br>
                                          	系统要求：
-                                           <s:property value='app.getOsPerm()'/><br>
+                                           <s:property value='app.getOsPerm_android()'/><br>
                                           	 应用大小：
-                                           <s:property value='app.getFileSize()'/><br>
+                                           <s:property value='app.getFileSize_android()'/><br>
                                         </p>
                                     </li>
+                                    
                             		<!-- <li>
                                         <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
                                         <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
@@ -370,6 +380,41 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                         </div>
                                     </li> -->
                                 </ul>
+                                </s:if>
+                            </div>
+                            <div class="load_more">
+                                <s:if test="%{app.isIos == 1}">
+                                <ul>
+                                <li>
+                                        <h4>IOS版本应用信息</h4>
+                                        <p><s:property value='app.info_ios' escape="false"/><br><br><br><br><br>
+                                             版本号：
+                                           <s:property value='app.getVersionNumber_ios()'/><br>
+                                            更新日期：
+                                           <s:property value='app.getChangeDate_ios()'/><br>
+                                             作者：
+                                           <s:property value='app.getAuthor()'/><br>
+                                            系统要求：
+                                           <s:property value='app.getOsPerm_ios()'/><br>
+                                             应用大小：
+                                           <s:property value='app.getFileSize_ios()'/><br>
+                                        </p>
+                                    </li>
+                                    <!-- <li>
+                                        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                                        <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
+                                        <div class="load-grids">
+                                            <div class="load-grid">
+                                                <p>Category</p>
+                                            </div>
+                                            <div class="load-grid">
+                                                <a href="movies.html">Entertainment</a>
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                        </div>
+                                    </li> -->
+                                </ul>
+                            </s:if>
                             </div>
                     </div>
 
@@ -438,7 +483,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                         <s:property value='#app.name' />
                                         </s:a></h4>
                                             <!-- <li><p class="author author-info"><a href="#" class="author">zuozhe</a></p></li> -->
-                                        <p class="views views-info">下载量：<s:property value='#app.downloadNumber' /></p>   
+                                        <s:if test="%{#app.isAndroid == 1}">
+                            <p class="views views-info">Android下载量：<s:property value='#app.downloadNumber_android' /></p> 
+                            </s:if>
+
+                            <s:if test="%{#app.isIos == 1}">
+                            <p class="views views-info">IOS下载量：<s:property value='#app.downloadNumber_ios' /></p> 
+                            </s:if>  
                                     </div>
                                 </div>
                                 </s:iterator>
