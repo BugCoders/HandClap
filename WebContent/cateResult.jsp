@@ -162,7 +162,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
 
                 <ul >
-                <s:iterator value="{'1','2','3','4','5','6','7','8','9','10'}" var='page'>
+                <s:iterator value="{'1','2','3','4','5'}" var='page'>
                 
 
                 <li><s:url id="url" action="Category">

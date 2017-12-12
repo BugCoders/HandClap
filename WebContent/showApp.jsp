@@ -346,7 +346,9 @@ GlideView.prototype = {
                         <h4>应用截图</h4>
                         <s:iterator value="screenshotList1" id='screen'>
                         <div> <img src="<s:property value='screen'/>" width="200" height="340"></div>
+
                         </s:iterator>
+                        <img src="white.png" width="200" height="340">
                    </div>
                 </s:if>
                 <s:if test="%{app.isAndroid == 0 && app.isIos == 1}">
@@ -355,6 +357,7 @@ GlideView.prototype = {
                         <s:iterator value="screenshotList2" id='screen'>
                         <div> <img src="<s:property value='screen'/>" width="200" height="340"></div>
                         </s:iterator>
+                        <img src="white.png" width="200" height="340">
                    </div>
                </s:if>
 
