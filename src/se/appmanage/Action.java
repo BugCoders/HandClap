@@ -15,7 +15,7 @@ public class Action extends ActionSupport {
     private static final long serialVersionUID = -4701411111486898232L;
 
     private static final int MAX_NUMBERS_OF_PAGE = 20;
-    private int pageNumber = 1;
+    private int pageNumber = 1; 
     private List<AppEntity> appList;
     private List<CommentEntity> commentList;
     private String queryName;
@@ -148,13 +148,12 @@ public class Action extends ActionSupport {
              * "root", "3.1415926");
              */
             conn = DBConnection.getConnection();
-            String sql = "select appid,name,iconLink,downloadnumber_android,downloadnumber_ios,isandroid,isios from app where name like ? order by name asc,appid limit ?,?";
-            // String sql = "select appid,name,iconLink from app where FIND_IN_SET(?, name)
-            // order by name asc";
+            String sql = "select appid,name,iconLink,downloadnumber_android,downloadnumber_ios,isandroid,isios from app where name like ? or namepinyin like ? order by name asc,appid limit ?,?";
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, queryName + "%");
-            ptmt.setInt(2, (pageNumber - 1) * 20);
-            ptmt.setInt(3, MAX_NUMBERS_OF_PAGE);
+            ptmt.setString(2, queryName + "%");
+            ptmt.setInt(3, (pageNumber - 1) * 20);
+            ptmt.setInt(4, MAX_NUMBERS_OF_PAGE);
             // ptmt.setString(1, queryName);
             ResultSet rs = ptmt.executeQuery();
             ret = "noresult";
@@ -365,14 +364,14 @@ public class Action extends ActionSupport {
                 screenshotList2 = new ArrayList<String>();
                 String[] tmp = null;
                 if (rs.getString("screenshot_android") != null)
-                    rs.getString("screenshot_android").split(" ");
+                    tmp=rs.getString("screenshot_android").split(" ");
                 if (tmp != null) {
                     for (String s : tmp) {
                         screenshotList1.add(s);
                     }
                 }
                 if (rs.getString("screenshot_ios") != null)
-                    rs.getString("screenshot_ios").split(" ");
+                    tmp=rs.getString("screenshot_ios").split(" ");
                 if (tmp != null) {
                     for (String s : tmp) {
                         screenshotList2.add(s);
@@ -418,7 +417,6 @@ public class Action extends ActionSupport {
             ptmt.setInt(3, MAX_NUMBERS_OF_PAGE);
             // ptmt.setInt(3, MAX_NUMBERS_OF_PAGE);
             rs = ptmt.executeQuery();
-            ret = "noresult";
             commentList = new ArrayList<CommentEntity>();
             while (rs.next()) {
                 CommentEntity tmp = new CommentEntity();

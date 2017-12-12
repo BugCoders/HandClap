@@ -21,7 +21,7 @@ public class WandoujiaAndroidSpider implements PageProcessor {
         if (page.getUrl().regex("http://www.wandoujia.com/apps").match()) {
             List<String> tmp = page.getHtml().xpath("//*a[@class=\"cate-link\"]/@href").all();
             for (String s : tmp) {
-                for (int i = 1; i < 2; i++) {
+                for (int i = 1; i < 3; i++) {
                     page.addTargetRequest(s + "/" + i);
                 }
             }
@@ -53,7 +53,8 @@ public class WandoujiaAndroidSpider implements PageProcessor {
         } else if (page.getUrl().regex("http://www.wandoujia.com/apps/[a-zA-Z0-9._]+").match()) {
             String downloadLink = curUrl + "/binding?source=web-inner-referral-binded";
             String originAndroidID = curUrl.substring(30);
-            String name = page.getHtml().xpath("//*body/@data-title").get().trim();
+            String name = SpiderDataFormatter
+                    .formatInfo(page.getHtml().xpath("//*body/@data-title").get().trim());
             int dlNum = SpiderDataFormatter
                     .formatDownloadNumbers(page.getHtml().xpath("//*i[@itemprop=\"interactionCount\"]/text()").get());
             float score = SpiderDataFormatter
@@ -98,6 +99,7 @@ public class WandoujiaAndroidSpider implements PageProcessor {
             newApp.setDownloadLink_android(downloadLink);
             newApp.setDownloadNumber_android(dlNum);
             newApp.setIsAndroid(1);
+            newApp.setNamepinyin(ChineseToEnglish.getPinYin(name));
             DBMethods.insertAndroidApp(newApp);
             count++;
         }

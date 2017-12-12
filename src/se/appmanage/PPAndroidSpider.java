@@ -26,7 +26,7 @@ public class PPAndroidSpider implements PageProcessor {
         if (page.getUrl().regex("https://www.25pp.com/android").match() || page.getUrl().regex("https://www.25pp.com/android/game").match()) {
             List<String> tmp = page.getHtml().xpath("//*a[@data-stat-pos=\"cateList\"]/@href").all();
             for (String s : tmp) {
-                for (int i = 1; i <= 20; i++) {
+                for (int i = 1; i <= 2; i++) {
                     page.addTargetRequest(head + s + i);
                 }
             }
@@ -113,6 +113,7 @@ public class PPAndroidSpider implements PageProcessor {
             newApp.setDownloadNumber_android(dlNum);
             newApp.setScreenShot_android(screenShot);
             newApp.setIsAndroid(1);
+            newApp.setNamepinyin(ChineseToEnglish.getPinYin(appName));
             DBMethods.insertAndroidApp(newApp);
             count++;
         }

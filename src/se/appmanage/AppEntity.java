@@ -8,6 +8,7 @@ public class AppEntity {
     private String originPage_ios;
     private int appID;
     private String name;
+    private String namepinyin;
     private String info_android;
     private String info_ios;
     private String iconLink;
@@ -203,6 +204,12 @@ public class AppEntity {
     }
     public void setOriginAndroidID(String originAndroidID) {
         this.originAndroidID = originAndroidID;
+    }
+    public String getNamepinyin() {
+        return namepinyin;
+    }
+    public void setNamepinyin(String namepinyin) {
+        this.namepinyin = namepinyin;
     }
     
 

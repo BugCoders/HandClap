@@ -1,7 +1,7 @@
 body{
 	background:#fff;
 	font-size:100%;
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Roboto",UILanguageFont,Arial,sans-serif;
 }
 body a {
   transition: 0.5s all;
@@ -15,13 +15,13 @@ a.navbar-brand {
 }
 nav.navbar.navbar-inverse.navbar-fixed-top {
     padding: 1.5em 0;
-    background: #FFF;
+    background: #eee;
     margin: 0;
     box-shadow: 0px 0 2px #C1C1C1 !important;
 }
 .sidebar {
     top: 80px;
-    background: #272c2e;
+    background: #eee;
     border: none;
     padding: 0 20px 20px 20px;
 }
@@ -129,15 +129,41 @@ form.navbar-form.navbar-right {
 .signin a:focus {
     outline: none;
 }
+
+.download{
+  float: left;
+  margin: 1.1em 0 0 1em;
+}
+.download a{
+	padding: 8px 20px;
+    background: #21DEEF;
+    color: #ffffff;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+}
+.download a:hover{
+	text-decoration:none;
+	color:#272C2E;
+	background:#F7F7F7;
+}
+.download a:focus {
+    outline: none;
+}
+
 .main {
     padding: 5em 0 0 0;
 }
 ul.nav.nav-sidebar li.active a{
-    background-color: #232323 !important;
-    color: #21DEEF;
+    background-color: #eee !important;
+    color: #555;
 }
 ul.nav.nav-sidebar li a{
-    color: #BBBBBB;
+    color: #555;
     font-size: 13px;
     font-weight: 600;
     padding: .8em 0 .8em 3em;
@@ -146,7 +172,7 @@ ul.nav.nav-sidebar li a{
   padding: 0 0 1em 1em;
 }
 .sidebar ul.nav-sidebar li a:hover{
-    background-color: #232323 !important;
+    /*background-color: #232323 !important;*/
     color: #21DEEF;
 }
 .sidebar ul.nav-sidebar li.active{
@@ -429,7 +455,7 @@ ul.social-slide li i.mac{
 .callbacks_tabs a:after {
   content: "\f111";
   font-size:0;
-  font-family: FontAwesome;
+  font-family: "Roboto",UILanguageFont,Arial,sans-serif;
   visibility: visible;
   display: block;
   height:15px;
@@ -549,7 +575,7 @@ a.btn.btn-primary.btn-lg.see-button.hvr-shutter-out-horizontal {
 	color:#000;
 	font-weight:600;
 	margin:1em 0;
-	font-family: 'Oswald', sans-serif;
+	font-family: "Roboto",UILanguageFont,Arial,sans-serif;
 }
 .resent-grid-info{
     background: #f7f7f7;
@@ -704,7 +730,7 @@ a.btn.btn-primary.btn-lg.see-button.hvr-shutter-out-horizontal {
 }
 /*-- footer --*/
 .footer{
-    background: #3B4142;
+    background: #fff;
     padding: 2em 3em;
 }
 .footer-top-nav ul{
@@ -856,14 +882,14 @@ select.form-control.bfh-countries:hover {
 .share li{
     display: block;
     margin: 1em 0;
-	color: #A8A8A8;
+	color: #555;
     font-size: 14px;
 }
 .share li a{
-    color: #A8A8A8;
+    /*color: #A8A8A8;*/
     font-size: 14px;
     text-decoration: none;
-    padding-left: 3em;
+    padding-left: 1.4em;
     line-height: 2em;
 }
 
@@ -1105,7 +1131,7 @@ select.form-control.bfh-countries:hover {
     padding: 1em;
 }
 .published h4{
-    color: #717171;
+    color: #333;
     font-size: 13px;
     margin: 0;
     line-height: 1.5em;
@@ -1113,7 +1139,7 @@ select.form-control.bfh-countries:hover {
 }
 .published p {
     font-size: 13px;
-    color: #9E9E9E;
+    color: #333;
     margin: 1em 0;
     line-height: 1.8em;
 }
@@ -1192,7 +1218,7 @@ width:100%;
     margin: 1em 0 0 0;
     padding-left: 0;
     padding: 3em 1em;
-    box-shadow: 0px 0 2px #C1C1C1 !important;
+    box-shadow: 0px 0 5px #C1C1C1 !important;
 }
 .all-comments-info a{
     font-size: 14px;
@@ -1280,7 +1306,7 @@ width:100%;
 	margin-top:4em;
 }
 .media {
-    box-shadow: 0px 8px 2px #C1C1C1 !important;
+    box-shadow: 0px 5px 2px #C1C1C1 !important;
     margin: 4em 0;
 }
 .media h5 {
@@ -1310,7 +1336,7 @@ width:100%;
 }
 .media-body p{
     font-size: 13px;
-    color: #757575;
+    color: #333;
     margin: 0 0 .5em 0;
     line-height: 1.5em;
 }
@@ -1438,7 +1464,7 @@ span.glyphicon.glyphicon-user {
   color: #181818;
   margin: 0 0 1em 0;
   font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Roboto",UILanguageFont,Arial,sans-serif;
 }
 .terms-info-grid p{
     font-size: 13px;
@@ -2813,18 +2839,40 @@ background: url(../images/social.png) no-repeat 0px 0px;
 	.footer-bottom ul li a.f-history {
 		padding: .52em 1em .52em 3em;
 	}
-  .card {
-  width: 96%;
-  width: 298px\9;
-  margin: 0 2% 2% 2%;
-  margin: 0 10px 20px 12px\9;
-  _margin: 0 12px 20px 6px;
-  position: top;
-  box-shadow: 0 1px 2px #d6d6d6;
-  border-bottom: 1px solid #d4d4d4;
-  min-height: 48px;
-  background: #fff;
-  overflow: hidden;
-  }
+	.container, .container img{
+		width:300px;
 
+	}
+	.container{
+		border:1px solid #333;
+	}
+	.container img{
+		border:0;
+	}
+	.container ul, .container li{list-style:none;margin:0;padding:0;}
+	.num{ position:absolute; right:5px; bottom:5px; font:12px/1.5 tahoma, arial; height:18px;}
+	.num li{
+	float: left;
+	color: #d94b01;
+	text-align: center;
+	line-height: 16px;
+	width: 16px;
+	height: 16px;
+	font-family: Arial;
+	font-size: 11px;
+	cursor: pointer;
+	margin-left: 3px;
+	border: 1px solid #f47500;
+	background-color: #fcf2cf;
+	}
+	.num li.on{
+	line-height: 18px;
+	width: 18px;
+	height: 18px;
+	font-size: 14px;
+	margin-top:-2px;
+	background-color: #ff9415;
+	font-weight: bold;
+	color:#FFF;
+	}
 }

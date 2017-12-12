@@ -17,11 +17,171 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- Custom Theme files -->
 <link href="css/style.css" rel='stylesheet' type='text/css' media="all" />
 <script src="js/jquery-1.11.1.min.js"></script>
+<script src="//www.gstatic.com/_/play/_/js/k=play.js.zh_CN.zgPWzvsl2Dg.O/m=base,m,i/rt=j/d=1/rs=AGlW0sYflhTMnGh-g4mu-QiXcgfpzh1g2Q" id="base-js" gapi_processed="true"></script>
 <!--start-smoth-scrolling-->
 <!-- fonts -->
 <!--link href='http://fonts.useso.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <link href='http://fonts.useso.com/css?family=Poiret+One' rel='stylesheet' type='text/css'-->
 <!-- //fonts -->
+<script type="text/javascript">
+var $$ = function (id) {
+    return "string" == typeof id ? document.getElementById(id) : id;
+};
+
+function Event(e){
+    var oEvent = document.all ? window.event : e;
+    if (document.all) {
+        if(oEvent.type == "mouseout") {
+            oEvent.relatedTarget = oEvent.toElement;
+        }else if(oEvent.type == "mouseover") {
+            oEvent.relatedTarget = oEvent.fromElement;
+        }
+    }
+    return oEvent;
+}
+
+function addEventHandler(oTarget, sEventType, fnHandler) {
+    if (oTarget.addEventListener) {
+        oTarget.addEventListener(sEventType, fnHandler, false);
+    } else if (oTarget.attachEvent) {
+        oTarget.attachEvent("on" + sEventType, fnHandler);
+    } else {
+        oTarget["on" + sEventType] = fnHandler;
+    }
+};
+
+var Class = {
+  create: function() {
+    return function() {
+      this.initialize.apply(this, arguments);
+    }
+  }
+}
+
+Object.extend = function(destination, source) {
+    for (var property in source) {
+        destination[property] = source[property];
+    }
+    return destination;
+}
+
+
+var GlideView = Class.create();
+GlideView.prototype = {
+  //容器对象 容器宽度 展示标签 展示宽度
+  initialize: function(obj, iWidth, sTag, iMaxWidth, options) {
+    var oContainer = $$(obj), oThis=this, len = 0;
+    
+    this.SetOptions(options);
+    
+    this.Step = Math.abs(this.options.Step);
+    this.Time = Math.abs(this.options.Time);
+    this.Showtext = false;//是否显示说明文本
+    
+    this._list = oContainer.getElementsByTagName(sTag);
+    len = this._list.length;
+    this._count = len;
+    this._width = parseInt(iWidth / len);
+    this._width_max = parseInt(iMaxWidth);
+    this._width_min = parseInt((iWidth - this._width_max) / (len - 1));
+    this._timer = null;
+    
+    //有说明文本
+    if(this.options.TextTag && this.options.TextHeight > 0){
+        this.Showtext = true;
+        this._text = oContainer.getElementsByTagName(this.options.TextTag);
+        this._height_text = -parseInt(this.options.TextHeight);
+    }
+    
+    this.Each(function(oList, oText, i){
+        oList._target = this._width * i;//自定义一个属性放目标left
+        oList.style.left = oList._target + "px";
+        oList.style.position = "absolute";
+        addEventHandler(oList, "mouseover", function(){ oThis.Set.call(oThis, i); });
+        
+        //有说明文本
+        if(oText){
+            oText._target = this._height_text;//自定义一个属性放目标bottom
+            oText.style.bottom = oText._target + "px";
+            oText.style.position = "absolute";
+        }
+    })
+    
+    //容器样式设置
+    oContainer.style.width = iWidth + "px";
+    oContainer.style.overflow = "hidden";
+    oContainer.style.position = "relative";
+    //移出容器时返回默认状态
+    addEventHandler(oContainer, "mouseout", function(e){
+        //变通防止执行oList的mouseout
+        var o = Event(e).relatedTarget;
+        if (oContainer.contains ? !oContainer.contains(o) : oContainer != o && !(oContainer.compareDocumentPosition(o) & 16)) oThis.Set.call(oThis, -1);
+    })
+  },
+  //设置默认属性
+  SetOptions: function(options) {
+    this.options = {//默认值
+        Step:           50,//滑动变化率
+        Time:           0.2,//滑动延时
+        TextTag:        "",//说明容器tag
+        TextHeight:     0//说明容器高度
+    };
+    Object.extend(this.options, options || {});
+  },
+  //相关设置
+  Set: function(index) {
+    if (index < 0) {
+        //鼠标移出容器返回默认状态
+        this.Each(function(oList, oText, i){ oList._target = this._width * i; if(oText){ oText._target = this._height_text; } })
+    } else {
+        //鼠标移到某个滑动对象上
+        this.Each(function(oList, oText, i){
+            oList._target = (i <= index) ? this._width_min * i : this._width_min * (i - 1) + this._width_max;
+            if(oText){ oText._target = (i == index) ? 0 : this._height_text; }
+        })
+    }
+    this.Move();
+  },
+  //移动
+  Move: function() {
+    clearTimeout(this._timer);
+    var bFinish = true;//是否全部到达目标地址
+    this.Each(function(oList, oText, i){
+        var iNow = parseInt(oList.style.left), iStep = this.GetStep(oList._target, iNow);
+        if (iStep != 0) { bFinish = false; oList.style.left = (iNow + iStep) + "px"; }
+        //有说明文本
+        if (oText) {
+            iNow = parseInt(oText.style.bottom), iStep = this.GetStep(oText._target, iNow);
+            if (iStep != 0) { bFinish = false; oText.style.bottom = (iNow + iStep) + "px"; }
+        }
+    })
+    //未到达目标继续移动
+    if (!bFinish) { var oThis = this; this._timer = setTimeout(function(){ oThis.Move(); }, this.Time); }
+  },
+  //获取步长
+  GetStep: function(iTarget, iNow) {
+    var iStep = (iTarget - iNow) / this.Step;
+    if (iStep == 0) return 0;
+    if (Math.abs(iStep) < 1) return (iStep > 0 ? 1 : -1);
+    return iStep;
+  },
+  Each:function(fun) {
+    for (var i = 0; i < this._count; i++)
+        fun.call(this, this._list[i], (this.Showtext ? this._text[i] : null), i);
+  }
+};
+
+</script>
+<style type="text/css">
+#idGlideView {
+    height:400px;
+    margin:50px auto;
+}
+#idGlideView div {
+    width:100px;
+    height:400px;
+}
+</style>
 </head>
   <body>
   <!-- 顶栏 -->
@@ -39,182 +199,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
                 <form class="navbar-form navbar-right" action="queryApp" method="post">
-                    <input type="text" class="form-control" placeholder="Search" name="queryName">
+                    <input type="text" class="form-control" placeholder="Search" name="queryName" required="required">
                     <input type="submit" value=" ">
                 </form>
-            </div>
-            <div class="header-top-right">
-                <div class="signin">
-                    <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Sign Up</a>
-                    <!-- pop-up-box -->
-                                    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>    
-                                    <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
-                                    <script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
-                                    <!--//pop-up-box -->
-                                    <div id="small-dialog2" class="mfp-hide">
-                                        <h3>Create Account</h3> 
-                                        <div class="social-sits">
-                                            <div class="facebook-button">
-                                                <a href="#">Connect with Facebook</a>
-                                            </div>
-                                            <div class="chrome-button">
-                                                <a href="#">Connect with Google</a>
-                                            </div>
-                                            <div class="button-bottom">
-                                                <p>Already have an account? <a href="#small-dialog" class="play-icon popup-with-zoom-anim">Login</a></p>
-                                            </div>
-                                        </div>
-                                        <div class="signup">
-                                            <form>
-                                                <input type="text" class="email" placeholder="Mobile Number" maxlength="10" pattern="[1-9]{1}\d{9}" title="Enter a valid mobile number" />
-                                            </form>
-                                            <div class="continue-button">
-                                                <a href="#small-dialog3" class="hvr-shutter-out-horizontal play-icon popup-with-zoom-anim">CONTINUE</a>
-                                            </div>
-                                        </div>
-                                        <div class="clearfix"> </div>
-                                    </div>  
-                                    <div id="small-dialog3" class="mfp-hide">
-                                        <h3>Create Account</h3> 
-                                        <div class="social-sits">
-                                            <div class="facebook-button">
-                                                <a href="#">Connect with Facebook</a>
-                                            </div>
-                                            <div class="chrome-button">
-                                                <a href="#">Connect with Google</a>
-                                            </div>
-                                            <div class="button-bottom">
-                                                <p>Already have an account? <a href="#small-dialog" class="play-icon popup-with-zoom-anim">Login</a></p>
-                                            </div>
-                                        </div>
-                                        <div class="signup">
-                                            <form>
-                                                <input type="text" class="email" placeholder="Email" required="required" pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?" title="Enter a valid email"/>
-                                                <input type="password" placeholder="Password" required="required" pattern=".{6,}" title="Minimum 6 characters required" autocomplete="off" />
-                                                <input type="text" class="email" placeholder="Mobile Number" maxlength="10" pattern="[1-9]{1}\d{9}" title="Enter a valid mobile number" />
-                                                <input type="submit"  value="Sign Up"/>
-                                            </form>
-                                        </div>
-                                        <div class="clearfix"> </div>
-                                    </div>  
-                                    <div id="small-dialog7" class="mfp-hide">
-                                        <h3>Create Account</h3> 
-                                        <div class="social-sits">
-                                            <div class="facebook-button">
-                                                <a href="#">Connect with Facebook</a>
-                                            </div>
-                                            <div class="chrome-button">
-                                                <a href="#">Connect with Google</a>
-                                            </div>
-                                            <div class="button-bottom">
-                                                <p>Already have an account? <a href="#small-dialog" class="play-icon popup-with-zoom-anim">Login</a></p>
-                                            </div>
-                                        </div>
-                                        <div class="signup">
-                                            <form action="upload.html">
-                                                <input type="text" class="email" placeholder="Email" required="required" pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?" title="Enter a valid email"/>
-                                                <input type="password" placeholder="Password" required="required" pattern=".{6,}" title="Minimum 6 characters required" autocomplete="off" />
-                                                <input type="submit"  value="Sign In"/>
-                                            </form>
-                                        </div>
-                                        <div class="clearfix"> </div>
-                                    </div>      
-                                    <div id="small-dialog4" class="mfp-hide">
-                                        <h3>Feedback</h3> 
-                                        <div class="feedback-grids">
-                                            <div class="feedback-grid">
-                                                <p>Suspendisse tristique magna ut urna pellentesque, ut egestas velit faucibus. Nullam mattis lectus ullamcorper dui dignissim, sit amet egestas orci ullamcorper.</p>
-                                            </div>
-                                            <div class="button-bottom">
-                                                <p><a href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign in</a> to get started.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="small-dialog5" class="mfp-hide">
-                                        <h3>Help</h3> 
-                                            <div class="help-grid">
-                                                <p>Suspendisse tristique magna ut urna pellentesque, ut egestas velit faucibus. Nullam mattis lectus ullamcorper dui dignissim, sit amet egestas orci ullamcorper.</p>
-                                            </div>
-                                            <div class="help-grids">
-                                                <!-- <div class="help-button-bottom">
-                                                    <p><a href="#small-dialog4" class="play-icon popup-with-zoom-anim">Feedback</a></p>
-                                                </div>
-                                                <div class="help-button-bottom">
-                                                    <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Lorem ipsum dolor sit amet</a></p>
-                                                </div>
-                                                <div class="help-button-bottom">
-                                                    <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Nunc vitae rutrum enim</a></p>
-                                                </div>
-                                                <div class="help-button-bottom">
-                                                    <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Mauris at volutpat leo</a></p>
-                                                </div>
-                                                <div class="help-button-bottom">
-                                                    <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Mauris vehicula rutrum velit</a></p>
-                                                </div>
-                                                <div class="help-button-bottom">
-                                                    <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Aliquam eget ante non orci fac</a></p>
-                                                </div> -->
-                                            </div>
-                                    </div>
-                                    <div id="small-dialog6" class="mfp-hide">
-                                        <div class="video-information-text">
-                                            <!-- <h4>Video information & settings</h4>
-                                            <p>Suspendisse tristique magna ut urna pellentesque, ut egestas velit faucibus. Nullam mattis lectus ullamcorper dui dignissim, sit amet egestas orci ullamcorper.</p>
-                                            <ol>
-                                                <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                                                <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                                                <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                                                <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                                                <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                                            </ol>-->
-                                        </div> 
-                                    </div>
-                                    <script>
-                                            $(document).ready(function() {
-                                            $('.popup-with-zoom-anim').magnificPopup({
-                                                type: 'inline',
-                                                fixedContentPos: false,
-                                                fixedBgPos: true,
-                                                overflowY: 'auto',
-                                                closeBtnInside: true,
-                                                preloader: false,
-                                                midClick: true,
-                                                removalDelay: 300,
-                                                mainClass: 'my-mfp-zoom-in'
-                                            });
-                                                                                                            
-                                            });
-                                    </script>   
-                </div>
-                <div class="signin">
-                    <a href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign In</a>
-                    <div id="small-dialog" class="mfp-hide">
-                        <h3>Login</h3>
-                        <div class="social-sits">
-                            <div class="facebook-button">
-                                <a href="#">Connect with Facebook</a>
-                            </div>
-                            <div class="chrome-button">
-                                <a href="#">Connect with Google</a>
-                            </div>
-                            <div class="button-bottom">
-                                <p>New account? <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Signup</a></p>
-                            </div>
-                        </div>
-                        <div class="signup">
-                            <form>
-                                <input type="text" class="email" placeholder="Enter email / mobile" required="required" pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?"/>
-                                <input type="password" placeholder="Password" required="required" pattern=".{6,}" title="Minimum 6 characters required" autocomplete="off" />
-                                <input type="submit"  value="LOGIN"/>
-                            </form>
-                            <div class="forgot">
-                                <a href="#">Forgot password ?</a>
-                            </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                </div>
-                <div class="clearfix"> </div>
             </div>
         </div>
         <div class="clearfix"> </div>
@@ -325,11 +312,79 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 </li>
                             </s:if>
                                 <li class="view" title="访问量"><s:property value='app.visits' /></li>
+
+                                <s:if test="%{app.isAndroid == 1}">
+                                <li><div class="download" style="display:inline-block;margin-left:0;"><a href="<s:property value='app.originPage_android'/>" class="play-icon popup-with-zoom-download" >Android</a></div></li>
+                                </s:if>
+
+                                <script>
+
+                                function downApk(){
+                                    var urls = "http://ftp-apk.pcauto.com.cn/pub/autoclub-5000-autowapDL1.apk";/*下载链接*/
+                                    if(urls != null){window.location.href=urls;}
+                                    else{alert("没有链接");}
+                                }
+                                </script>
+                                <s:if test="%{app.isIos == 1}">
+                                <li><div class="download" style="display:inline-block;margin-left:0;"><a href="<s:property value='app.downloadLink_ios'/>" class="play-icon popup-with-zoom-download" >&nbsp;&nbsp;&nbsp;IOS&nbsp;&nbsp;&nbsp;</a></div></li>
+                                </s:if>
+                                <script>
+                                function downIos(){
+                                    var urls = null;/*下载链接*/
+                                    if(urls != null){window.location.href=urls;}
+                                    else{alert("没有链接");}
+                                }
+                                </script>
                             </ul>
                         </div>
                     </div>
 
                     <div class="clearfix"> </div>
+                    <!-- 应用截图 -->
+                    <s:if test="%{app.isAndroid == 1}">
+                   <div id="idGlideView" >
+                        <h4>应用截图</h4>
+                        <s:iterator value="screenshotList1" id='screen'>
+                        <div> <img src="<s:property value='screen'/>" width="200" height="340"></div>
+                        </s:iterator>
+                   </div>
+                </s:if>
+                <s:if test="%{app.isAndroid == 0 && app.isIos == 1}">
+                   <div id="idGlideView" >
+                        <h4>应用截图</h4>
+                        <s:iterator value="screenshotList2" id='screen'>
+                        <div> <img src="<s:property value='screen'/>" width="200" height="340"></div>
+                        </s:iterator>
+                   </div>
+               </s:if>
+
+<SCRIPT>
+var gv = new GlideView("idGlideView", 1000, "div", 500, { TextTag: "a", TextHeight: 50 });
+var oSel =-1;
+for (var i = 0; i <= gv._count; i++) {
+    var op = document.createElement("OPTION");
+    op.value = i; op.innerHTML = "展开第" + (i + 1) + "个";
+    oSel.appendChild(op);
+}
+oSel.onchange = function(){ gv.Set(oSel.value); }
+
+$$("up").onclick = function(){ gv.Step -= 5; if(gv.Step <= 0) gv.Step = 1; };
+$$("down").onclick = function(){ gv.Step += 5; if(gv.Step >= 500) gv.Step = 50; };
+$$("stop").onclick = function(){ clearTimeout(gv._timer); };
+$$("start").onclick = function(){ gv.Move(); };
+$$("close").onclick = function(){ gv.Step = 1; };
+$$("open").onclick = function(){ gv.Step = gv.options.Step; };
+$$("hide").onclick = function(){ gv.Showtext = false; };
+$$("show").onclick = function(){ gv.Showtext = true; };
+var t = null, i = -1;
+$$("auto").onclick = function(){ clearInterval(t);t=setInterval(function(){ if(++i>gv._count) i=0; gv.Set(i); }, 1000); };
+$$("cancel").onclick = function(){ clearInterval(t);gv.Set(-1); };
+</SCRIPT>
+
+
+
+
+
                     <div class="published">
                         <script src="jquery.min.js"></script>
                             <script>

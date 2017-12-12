@@ -5,6 +5,7 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.selector.JsonPathSelector;
 
 public class PPIosSpider implements PageProcessor {
     private Site site = Site.me().setCycleRetryTimes(3).setSleepTime(100);
@@ -17,7 +18,7 @@ public class PPIosSpider implements PageProcessor {
 
     @Override
     public void process(Page page) {
-        String head = "https://www.25pp.com";
+
         String curUrl = page.getUrl().toString();
         if (page.getUrl().regex("https://www.25pp.com").match()) {
             page.addTargetRequest("https://www.25pp.com/ios");
@@ -41,7 +42,7 @@ public class PPIosSpider implements PageProcessor {
             System.out.println(curUrl);
             String max = tmp.get(tmp.size() - 1);
             int maxPages = Integer.valueOf(max);
-            for (int i = 1; i <= 1; i++) {
+            for (int i = 1; i <=1; i++) {
                 page.addTargetRequest(curUrl + "_0_2/" + i);
             }
         }
@@ -68,9 +69,10 @@ public class PPIosSpider implements PageProcessor {
             String changeDate = tmp.get(0);
             String fileSize = tmp1.get(0);
             String versionNumber = tmp.get(1);
+            //String t = new JsonPathSelector("$.result").select(page.getRawText());
             // String author =
             // page.getHtml().xpath("//*span[@class=\"dev-sites\"]/text()").get();
-
+       
             /*System.out.println("结果");
             System.out.println("name:" + appName);
             System.out.println("icon:" + iconLink);
@@ -101,6 +103,7 @@ public class PPIosSpider implements PageProcessor {
             newApp.setDownloadNumber_ios(dlNum);
             newApp.setScreenShot_ios(screenShot);
             newApp.setIsIos(1);
+            newApp.setNamepinyin(ChineseToEnglish.getPinYin(appName));
             int id = DBMethods.isAndroid(appName,iconLink);
             if (id != -1) {
                 newApp.setAppID(id);

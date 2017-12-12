@@ -1,5 +1,6 @@
 package se.appmanage;
 
+import java.io.File;
 import java.sql.Connection;
 //import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -59,16 +60,17 @@ public class DBMethods {
              * "root", "3.1415926");
              */
             conn = DBConnection.getConnection();
-            String sql = "select appid,iconlink,isios,isandroid from app where name = ?";
+            String sql = "select appid,iconlink,isios,isandroid from app where name = ? order by downloadnumber_android desc";
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, appName);
             ResultSet rs = ptmt.executeQuery();
-            CompareIcon.downloadPicture(iconUrl, "1");
+            //CompareIcon.downloadPicture(iconUrl, "1");
             double max = 0;
             int id = -1;
             // int flag =1;
             while (rs.next()) {
-                if (rs.getInt("isandroid") == 1 && rs.getInt("isios") == 0) {
+                return rs.getInt("appid");
+                /*if (rs.getInt("isandroid") == 1 && rs.getInt("isios") == 0) {
                     CompareIcon.downloadPicture(rs.getString("iconlink"), "2");
                     // CompareIcon.convertPngToJpg("2.png");
                     double similar = CompareIcon.compareImage("1.jpg", "2.png") ;
@@ -77,10 +79,10 @@ public class DBMethods {
                         id = rs.getInt("appid");
                         // flag = rs.getInt("isios");
                     }
-                }
+                }*/
             }
-            if (max > 0.5)
-                return id;
+            /*if (max > 0.3)
+                return id;*/
             return -1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,7 +110,7 @@ public class DBMethods {
             conn = DBConnection.getConnection();
             // ResultSet rs = ptmt.executeQuery();
             String sql = "insert into app(originpage_android,name,info_android,iconlink,filesize_android,category,"
-                    + "changedate_android,versionnumber_android,osperm_android,screenshot_android,score_android,downloadLink_android,downloadnumber_android,isandroid,originandroidid,author) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "changedate_android,versionnumber_android,osperm_android,screenshot_android,score_android,downloadLink_android,downloadnumber_android,isandroid,originandroidid,author,namepinyin) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, newApp.getOriginPage_android());
             ptmt.setString(2, newApp.getName());
@@ -126,6 +128,7 @@ public class DBMethods {
             ptmt.setInt(14, newApp.getIsAndroid());
             ptmt.setString(15, newApp.getOriginAndroidID());
             ptmt.setString(16, newApp.getAuthor());
+            ptmt.setString(17, newApp.getNamepinyin());
             ptmt.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,7 +154,7 @@ public class DBMethods {
             conn = DBConnection.getConnection();
             // ResultSet rs = ptmt.executeQuery();
             String sql = "insert into app(originpage_ios,name,info_ios,iconlink,filesize_ios,category,"
-                    + "changedate_ios,versionnumber_ios,osperm_ios,screenshot_ios,score_ios,downloadLink_ios,downloadnumber_ios,isios) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "changedate_ios,versionnumber_ios,osperm_ios,screenshot_ios,score_ios,downloadLink_ios,downloadnumber_ios,isios,namepinyin) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, newApp.getOriginPage_ios());
             ptmt.setString(2, newApp.getName());
@@ -167,6 +170,7 @@ public class DBMethods {
             ptmt.setString(12, newApp.getDownloadLink_ios());
             ptmt.setInt(13, newApp.getDownloadNumber_ios());
             ptmt.setInt(14, newApp.getIsIos());
+            ptmt.setString(15, newApp.getNamepinyin());
             ptmt.execute();
         } catch (Exception e) {
             e.printStackTrace();

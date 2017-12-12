@@ -17,10 +17,10 @@ import javax.imageio.ImageIO;
 
 public class CompareIcon {
     // 全流程
-    /*public static void main(String[] args) {
-        downloadPicture("https://img.25pp.com/uploadfile/app/icon/20171202/1512166189677087.jpg@140w_140h", "1");
+    public static void main(String[] args) {
+        downloadPicture("https://img.25pp.com/uploadfile/app/icon/20171211/1512976568109520.jpg@140w_140h", "1");
         downloadPicture(
-                "http://android-artworks.25pp.com/fs08/2017/08/01/6/110_fb015d8155303d523fe69724528410f3_con_130x130.png",
+                "http://android-artworks.25pp.com/fs08/2016/11/21/11/106_31e1fced509900af481c2395e430a0f7_con_130x130.png",
                 "2");
         //convertPngToJpg("2.png");
         try {
@@ -29,7 +29,7 @@ public class CompareIcon {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }*/
+    }
 
     public static double compareImage(String imgPath1, String imgPath2) throws IOException {
         // 获取图像
@@ -101,10 +101,10 @@ public class CompareIcon {
             url = new URL(picUrl);
             DataInputStream dataInputStream = new DataInputStream(url.openStream());
             String imageName = null;
-            if (name.equals("1"))
-                imageName = name + ".jpg";
-            else
+            if (name.equals("2"))
                 imageName = name + ".png";
+            else
+                imageName = name + ".jpg";
             File f = new File(imageName.trim());
             FileOutputStream fileOutputStream = new FileOutputStream(f);
             byte[] buffer = new byte[1024];
